@@ -89,9 +89,10 @@ will define real syntax and mapping rules. Initial tests may use an explicitly
 test-only synthetic adapter, which must never advertise production OpenAM
 compatibility.
 
-Alternative considered: assume the existing README's reference to LDIF defines
-the format. Rejected because one historical sentence is not an approved
-structural specification and does not define block or override semantics.
+Alternative considered: assume a familiar OpenAM export format before
+structural analysis.
+Rejected because the actual corporate export syntax and semantics have
+not yet been approved or documented.
 
 ### 3. Keep the canonical model minimal and versioned
 
