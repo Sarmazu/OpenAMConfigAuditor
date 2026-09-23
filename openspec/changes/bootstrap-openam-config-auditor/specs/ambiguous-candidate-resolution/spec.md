@@ -17,16 +17,24 @@ it SHALL NOT receive either complete configuration.
 - **THEN** the resolver receives only the relevant minimized and policy-filtered subset
 
 ### Requirement: Semantic decisions are explicitly labeled
-A resolver decision SHALL be marked as semantic or ambiguous resolution and
-SHALL remain distinguishable from every deterministic match method.
+A resolver output SHALL be accepted only when it passes a configured,
+deterministic acceptance policy applied by the auditor. Every accepted decision
+SHALL be marked as semantic or ambiguous resolution and SHALL remain
+distinguishable from every deterministic match method. Resolver self-reported
+confidence SHALL NOT by itself determine acceptance.
 
 #### Scenario: Resolver selects one candidate
-- **WHEN** the resolver selects a candidate under its declared acceptance policy
-- **THEN** the result identifies the semantic match method and retains decision metadata sufficient for review
+- **WHEN** a schema-valid resolver output selects a supplied candidate and the configured deterministic acceptance policy accepts it
+- **THEN** the result identifies the semantic match method and retains the decision and acceptance-policy metadata needed for review
+
+#### Scenario: Resolver reports confidence without satisfying policy
+- **WHEN** a resolver output reports confidence but does not satisfy the configured deterministic acceptance policy
+- **THEN** the auditor rejects the decision and preserves the ambiguous outcome
 
 ### Requirement: Resolver failure preserves ambiguity
 The auditor SHALL retain a deterministic ambiguous outcome when the resolver is
-disabled, unavailable, invalid, or insufficiently confident.
+disabled, unavailable, invalid, or rejected by the configured deterministic
+acceptance policy.
 
 #### Scenario: Resolver is unavailable
 - **WHEN** an ambiguous set exists and the configured resolver cannot be called
@@ -34,6 +42,10 @@ disabled, unavailable, invalid, or insufficiently confident.
 
 #### Scenario: Resolver returns an invalid candidate
 - **WHEN** a resolver selects an item outside the supplied candidate set
+- **THEN** the auditor rejects that decision and preserves the ambiguous outcome
+
+#### Scenario: Acceptance policy rejects a validly shaped response
+- **WHEN** a resolver response is schema-valid but fails the configured deterministic acceptance policy
 - **THEN** the auditor rejects that decision and preserves the ambiguous outcome
 
 ### Requirement: Resolver cannot override exact matching

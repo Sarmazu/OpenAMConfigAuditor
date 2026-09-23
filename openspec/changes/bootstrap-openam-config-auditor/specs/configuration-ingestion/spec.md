@@ -40,6 +40,10 @@ sanitized structural analysis has defined the relevant syntax and semantics.
 - **WHEN** a production OpenAM source is presented before the structural analysis is approved
 - **THEN** the auditor reports that production ingestion is unsupported and does not fabricate records
 
+#### Scenario: Local structural report has not been approved
+- **WHEN** Kilo has produced a local corporate structural report but manual structural and security reviews have not explicitly approved it for public-development use
+- **THEN** production ingestion remains unsupported and no concrete parser semantics are inferred from that report
+
 ### Requirement: Ingestion failures are explicit and non-disclosing
 The auditor SHALL report unreadable, malformed, or partially parsed sources as
 failures without including source values in the error message by default.

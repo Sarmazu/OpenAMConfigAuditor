@@ -2,8 +2,8 @@
 
 ## Purpose
 
-Defines portable HTML and focused CSV views that help reviewers find and track
-actionable comparison outcomes without exposing protected values.
+Defines portable HTML and focused CSV views that help corporate reviewers find
+and remediate differences while preserving the configured disclosure policy.
 
 ## ADDED Requirements
 
@@ -39,17 +39,19 @@ in `result.json`.
 - **THEN** the state is retained locally for that report and the underlying match and value statuses remain unchanged
 
 ### Requirement: Safe value copying
-The HTML report SHALL allow copying non-sensitive values and SHALL enforce the
-sensitive-data protection contract for all copy interactions.
+The HTML report SHALL allow copying non-secret values only when the active
+corporate output policy permits their disclosure and SHALL enforce the
+sensitive-data protection contract for every copy interaction.
 
 #### Scenario: Reviewer copies an allowed value
-- **WHEN** a value is classified as non-sensitive and the reviewer activates its copy control
-- **THEN** the displayed non-sensitive value is copied
+- **WHEN** a value is classified as non-secret, permitted by the active corporate output policy, and the reviewer activates its copy control
+- **THEN** the displayed non-secret value is copied
 
 ### Requirement: Focused CSV exports
 Supported result rendering SHALL produce `comparison.csv`, `missing-in-nt.csv`,
-and `ambiguous.csv` with consistent sanitized data derived from `result.json`.
+and `ambiguous.csv` with consistent policy-compliant data derived from
+`result.json`.
 
 #### Scenario: CSV reports are generated
 - **WHEN** the renderer processes a valid saved result
-- **THEN** each CSV contains the applicable outcomes and uses the same statuses and redactions as the authoritative result
+- **THEN** each CSV contains the applicable outcomes and uses the same statuses and disclosure decisions as the authoritative result

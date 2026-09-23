@@ -9,12 +9,18 @@ and repeatable report generation without rereading source configurations.
 
 ### Requirement: Result JSON is the authoritative comparison artifact
 A successful comparison SHALL produce a schema-versioned `result.json` that
-contains the sanitized comparison outcomes, statuses, methods, safe provenance,
-and processing metadata required by supported renderers.
+contains policy-compliant comparison outcomes, statuses, methods, safe
+provenance, and processing metadata required by supported renderers. A local
+corporate result MAY contain output-policy-approved non-secret values, while
+secrets and values with unknown sensitivity SHALL remain redacted by default.
 
 #### Scenario: Comparison succeeds
 - **WHEN** both sources are processed and the comparison completes
 - **THEN** a valid `result.json` is produced as the source of truth for all report formats
+
+#### Scenario: Corporate output policy permits a non-secret value
+- **WHEN** a non-secret value is needed for remediation and permitted by the active corporate output policy
+- **THEN** the local corporate result may retain that value without making the artifact eligible for repository commit
 
 #### Scenario: Comparison cannot complete
 - **WHEN** a fatal ingestion or contract-validation error occurs
