@@ -1,0 +1,63 @@
+schema: spec-driven
+
+context: |
+  OpenAMConfigAuditor is a small, local Python 3 tool for analyzing two large
+  OpenAM configuration sources, initially PREPROD versus NT. It will determine
+  whether each significant PREPROD parameter has a corresponding NT parameter
+  and whether matched values differ, independent of source ordering. Inputs may
+  be several megabytes.
+
+  Architecture: configuration sources -> deterministic parser -> canonical
+  records -> normalization -> deterministic matching -> candidate generation ->
+  LLM resolver only for ambiguous cases -> result.json -> HTML/CSV reports. The
+  LLM is neither the parser nor the primary diff engine. Exact matching and most
+  results must be deterministic and reproducible.
+
+  Corporate-data boundary: this public repository must never contain real
+  OpenAM configurations, values, internal hostnames, IP addresses, URLs, DNs,
+  usernames, secrets, tokens, certificates, or internal identifiers. All
+  fixtures are synthetic, and reports/logs must not expose secrets.
+
+  The concrete OpenAM export syntax, block structure, canonical paths, and
+  override semantics are unknown until corporate agent Kilo supplies a sanitized
+  structural report at analysis/openam-config-structure.md (or an equivalent
+  safe document). Interfaces and contracts may be planned now; a production
+  parser remains blocked until that report is reviewed.
+
+  Keep the project local, explainable, testable, suitable for corporate
+  Linux/WSL, and free of mandatory external SaaS or unproven heavy frameworks.
+  Development follows: idea/problem -> proposal -> behavioral specs -> design ->
+  tasks -> human review -> apply -> verify -> sync/archive. NO SPEC -> NO
+  IMPLEMENTATION. Significant parser, normalization, matching, LLM, report,
+  CLI, security, and data-model changes always start as an OpenSpec change.
+  Small technical fixes are exempt only when they change neither observable
+  behavior nor an architectural contract.
+
+rules:
+  proposal:
+    - State the business or problem goal explicitly.
+    - Include a separate Non-goals section.
+    - State the corporate-data and security boundary explicitly.
+    - Keep implementation details in design rather than proposal.
+  specs:
+    - Describe observable behavior with testable scenarios.
+    - Cover failure and error cases explicitly.
+    - Do not prescribe Python class names or internal functions.
+    - Treat security and redaction behavior as part of the behavioral contract.
+  design:
+    - Separate deterministic processing from LLM-assisted processing.
+    - Describe data flow and trust boundaries.
+    - Address large inputs and reproducibility.
+    - Never make an LLM the sole decision source for exact matching.
+  tasks:
+    - Split implementation into small verifiable steps.
+    - Require automated tests for every substantial component.
+    - Use only synthetic fixtures; CI and tests must not require corporate configs.
+    - Do not include production parser implementation until the sanitized Kilo structural analysis is available and reviewed.
+
+operations:
+  apply:
+    guidance:
+      - Execute only approved tasks and do not expand scope independently.
+      - Run relevant automated tests after changes.
+      - Do not commit raw inputs or generated reports that may contain sensitive data.
